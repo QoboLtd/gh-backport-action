@@ -106,5 +106,8 @@ def github_get_commits_in_pr(pr_number: int, gh_token: str) -> typing.Any:
     response.raise_for_status()
     commits = []
     for commit in response.json():
+        # Exclude commit if is a merge commit from the base branch
+        if commit["commit"]["message"].startswith("Merge branch"):
+            continue
         commits.append(commit["sha"])
     return commits
